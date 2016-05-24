@@ -14,20 +14,21 @@ public class HtmlView implements View {
     private Controller controller;
     // for server validator
     private final String filePath = "./src/" + this.getClass().getPackage().getName().replace('.', '/') + "/vacancies.html";
-
-
+    // for me
+    //private final String filePath = "./src/main/java/" + this.getClass().getPackage().getName().replace('.', '/') + "/vacancies.html";
 
     @Override
     public void setController(Controller controller) {
         this.controller = controller;
     }
-    public void userCitySelectEmulationMethod() {
-        controller.onCitySelect("Kiev");
-    }
 
     @Override
     public void update(List<Vacancy> vacancies) {
         updateFile(getUpdatedFileContent(vacancies));
+    }
+
+    public void userCitySelectEmulationMethod() {
+        controller.onCitySelect("Kharkov");
     }
 
     private String getUpdatedFileContent(List<Vacancy> vacancies) {
@@ -54,7 +55,8 @@ public class HtmlView implements View {
                 templateElement.before(newVacancyElement.outerHtml());
             }
             fileContent = doc.html();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
             fileContent = "Some exception occurred";
         }
@@ -66,7 +68,8 @@ public class HtmlView implements View {
             BufferedWriter fWriter = new BufferedWriter(new FileWriter(filePath));
             fWriter.write(fileContent);
             fWriter.close();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -74,5 +77,4 @@ public class HtmlView implements View {
     protected Document getDocument() throws IOException {
         return Jsoup.parse(new File(filePath), "UTF-8");
     }
-
 }
