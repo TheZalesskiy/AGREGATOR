@@ -14,8 +14,6 @@ public class HtmlView implements View {
     private Controller controller;
     // for server validator
     private final String filePath = "./src/" + this.getClass().getPackage().getName().replace('.', '/') + "/vacancies.html";
-    // for me
-    //private final String filePath = "./src/main/java/" + this.getClass().getPackage().getName().replace('.', '/') + "/vacancies.html";
 
     @Override
     public void setController(Controller controller) {
