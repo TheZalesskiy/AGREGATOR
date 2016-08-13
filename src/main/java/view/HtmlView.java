@@ -1,10 +1,11 @@
-package com.javarush.test.level28.lesson15.big01.view;
+package view;
 
-import com.javarush.test.level28.lesson15.big01.Controller;
-import com.javarush.test.level28.lesson15.big01.vo.Vacancy;
+
+import controller.Controller;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import vo.Vacancy;
 
 import java.io.*;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public class HtmlView implements View {
     private Controller controller;
     // for server validator
-    private final String filePath = "./src/" + this.getClass().getPackage().getName().replace('.', '/') + "/vacancies.html";
+    private final String filePath = "./src/main/java/" + this.getClass().getPackage().getName().replace('.', '/') + "/vacancies.html";
 
     @Override
     public void setController(Controller controller) {

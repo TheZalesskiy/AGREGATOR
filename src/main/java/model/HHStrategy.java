@@ -1,27 +1,28 @@
-package com.javarush.test.level28.lesson15.big01.model;
+package model;
 
-import com.javarush.test.level28.lesson15.big01.vo.Vacancy;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import vo.Vacancy;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * RabotaStrategy class
- * date: 24.05.2016
- *
- * @autor TheZalesskie
- */
-public class RabotaStrategy implements Strategy {
-    private static final String URL_FORMAT = "http://rabota.ua/jobsearch/vacancy_list?keyWords=java&parentId=1";
 
-    @Override
+
+/**
+ * HHStrategy class
+ */
+public class HHStrategy implements Strategy {
+
+    private static final String URL_FORMAT = "http://hh.ua/search/vacancy?text=java+%s&page=%d";
+
+
     public List<Vacancy> getVacancies(String searchString) {
-        List<Vacancy> vacancies = new ArrayList<>();
+        List<Vacancy> vacancies = new ArrayList<Vacancy>();
         try {
             int pageNumber = 0;
             Document doc;
@@ -29,38 +30,32 @@ public class RabotaStrategy implements Strategy {
                 doc = getDocument(searchString, pageNumber++);
                 if (doc == null) break;
 
-                Elements elements = doc.getElementsByClass("job");
-
+                Elements elements = doc.select("[data-qa=vacancy-serp__vacancy]");
                 if (elements.size() == 0) break;
 
                 for (Element element : elements) {
                     // title
-                    Element titleElement = element.getElementsByClass("title").first();
+                    Element titleElement = element.select("[data-qa=vacancy-serp__vacancy-title]").first();
                     String title = titleElement.text();
 
-                    // url
-                    String url = "https://rabota.ua" + titleElement.getElementsByTag("a").attr("href");
-
                     // salary
-                    Element salaryElement = element.getElementsByClass("salary").first();
+                    Element salaryElement = element.select("[data-qa=vacancy-serp__vacancy-compensation]").first();
                     String salary = "";
                     if (salaryElement != null) {
                         salary = salaryElement.text();
                     }
 
-                    // city (it's important)
-                    Element cityEl = element.getElementsByClass("location").first();
-                    String city = "";
-                    if (cityEl != null) {
-                        city = cityEl.text();
-                    }
-
+                    // city
+                    String city = element.select("[data-qa=vacancy-serp__vacancy-address]").first().text();
 
                     // company
-                    String companyName = element.getElementsByClass("company_name").first().text();
+                    String companyName = element.select("[data-qa=vacancy-serp__vacancy-employer]").first().text();
 
                     // site
-                    String siteName = "http://rabota.ua/";
+                    String siteName = "http://hh.ua/";
+
+                    // url
+                    String url = titleElement.attr("href");
 
 
                     // add vacancy to the list
@@ -73,11 +68,13 @@ public class RabotaStrategy implements Strategy {
                     vacancy.setUrl(url);
                     vacancies.add(vacancy);
 
+
                 }
 
                 //break;
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             //e.printStackTrace();
         }
 
@@ -87,13 +84,12 @@ public class RabotaStrategy implements Strategy {
     protected Document getDocument(String searchString, int page) throws IOException {
 
 
-        String url = String.format(URL_FORMAT, page, searchString);
+        String url = String.format(URL_FORMAT, searchString, page);
         Document document = Jsoup.connect(url)
-                .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36")
-                .referrer("http://javarush.ru/")
+                .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+                .referrer("none")
                 .get();
 
         return document;
     }
 }
-

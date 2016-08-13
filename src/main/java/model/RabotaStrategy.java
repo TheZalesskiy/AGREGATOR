@@ -1,28 +1,28 @@
-package com.javarush.test.level28.lesson15.big01.model;
+package model;
 
-import com.javarush.test.level28.lesson15.big01.vo.Vacancy;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import vo.Vacancy;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MoikrugStrategy class
+ * RabotaStrategy class
  * date: 24.05.2016
  *
  * @autor TheZalesskie
  */
-public class MoikrugStrategy implements Strategy {
-    private static final String URL_FORMAT = "https://moikrug.ru/vacancies?page=%d&q=java+%s";
-
+public class RabotaStrategy implements Strategy {
+    private static final String URL_FORMAT = "http://rabota.ua/jobsearch/vacancy_list?keyWords=java&parentId=1";
 
     @Override
     public List<Vacancy> getVacancies(String searchString) {
-        List<Vacancy> vacancies = new ArrayList<>();
+        List<Vacancy> vacancies = new ArrayList<Vacancy>();
         try {
             int pageNumber = 0;
             Document doc;
@@ -40,7 +40,7 @@ public class MoikrugStrategy implements Strategy {
                     String title = titleElement.text();
 
                     // url
-                    String url = "https://moikrug.ru" + titleElement.getElementsByTag("a").attr("href");
+                    String url = "https://rabota.ua" + titleElement.getElementsByTag("a").attr("href");
 
                     // salary
                     Element salaryElement = element.getElementsByClass("salary").first();
@@ -61,8 +61,7 @@ public class MoikrugStrategy implements Strategy {
                     String companyName = element.getElementsByClass("company_name").first().text();
 
                     // site
-                    String siteName = "http://moikrug.ru/";
-
+                    String siteName = "http://rabota.ua/";
 
 
                     // add vacancy to the list
@@ -79,16 +78,14 @@ public class MoikrugStrategy implements Strategy {
 
                 //break;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             //e.printStackTrace();
         }
 
         return vacancies;
     }
 
-    protected Document getDocument(String searchString, int page) throws IOException
-    {
+    protected Document getDocument(String searchString, int page) throws IOException {
 
 
         String url = String.format(URL_FORMAT, page, searchString);

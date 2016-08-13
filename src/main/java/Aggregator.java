@@ -1,11 +1,6 @@
-package com.javarush.test.level28.lesson15.big01;
-
-import com.javarush.test.level28.lesson15.big01.model.*;
-import com.javarush.test.level28.lesson15.big01.view.HtmlView;
-import com.javarush.test.level28.lesson15.big01.view.View;
-import com.javarush.test.level28.lesson15.big01.vo.Vacancy;
-
-import java.util.List;
+import controller.Controller;
+import model.*;
+import view.HtmlView;
 
 /**
  * Aggregator class

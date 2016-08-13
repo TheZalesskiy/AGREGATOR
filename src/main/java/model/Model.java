@@ -1,7 +1,8 @@
-package com.javarush.test.level28.lesson15.big01.model;
+package model;
 
-import com.javarush.test.level28.lesson15.big01.view.View;
-import com.javarush.test.level28.lesson15.big01.vo.Vacancy;
+
+import view.View;
+import vo.Vacancy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class Model {
 
 
     public void selectCity(String city){
-        List<Vacancy> vacancies = new ArrayList<>();
+        List<Vacancy> vacancies = new ArrayList<Vacancy>();
         for (Provider provider : providersParam){
             vacancies.addAll(provider.getJavaVacancies(city));
 
